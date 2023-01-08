@@ -2,6 +2,7 @@
 #include "Framework.h"
 #include "core/vector2d.hpp"
 #include "logger.hpp"
+#include "helper.hpp"
 #include <cstdint>
 
 

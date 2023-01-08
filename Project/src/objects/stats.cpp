@@ -1,6 +1,6 @@
 #include "stats.hpp"
 #include "Framework.h"
-#include "defines.hpp"
+#include "helper.hpp"
 
 Sprite* Stats::heart_sprite;
 

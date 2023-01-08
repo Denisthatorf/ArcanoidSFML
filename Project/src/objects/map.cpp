@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include "Framework.h"
+#include "helper.hpp"
 #include "objects/boost.hpp"
 #include <cstdlib>
 

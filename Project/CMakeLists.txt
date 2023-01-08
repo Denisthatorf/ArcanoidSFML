@@ -17,7 +17,6 @@ target_include_directories(test
 target_link_libraries(test
         PUBLIC
             Framework
-            #${CMAKE_CURRENT_SOURCE_DIR}/lib/libFrameworkRelease.so.0.0.1
             )
 
 add_custom_target(data
