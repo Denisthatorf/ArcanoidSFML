@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "defines.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 
 #define SpritesNum 3
 

@@ -1,6 +1,7 @@
 #include "defines.hpp"
 
 #include <vector>
+#include <array>
 
 #define COLOR_COUNT 6
 
@@ -22,15 +23,13 @@ enum BlockColor : uint8_t
 	Gray
 };
 
-struct Boost;
-
 class Block
 {
 protected:
 	static int _width;
 	static int _height;
 	static unsigned int _block_num;
-	static Sprite* _sprites[COLOR_COUNT];
+	static std::array<Sprite*, COLOR_COUNT> _sprites;
 
 	vector2d<float> _position;
 	BlockColor _color;
@@ -38,6 +37,7 @@ protected:
 
 public:
 	Block(vector2d<float> location, BlockColor color);
+	virtual ~Block() = default;
     virtual void crash() = 0;
 
     void draw();

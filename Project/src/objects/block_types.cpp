@@ -1,5 +1,5 @@
 #include "block_types.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 
 static unsigned int normal_block_count = 0;
 

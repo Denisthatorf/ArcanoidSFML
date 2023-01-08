@@ -4,8 +4,8 @@
 
 #include "core/log.hpp"
 
-#include "math/vector2d.hpp"
-#include "math/collision.hpp"
+#include "core/vector2d.hpp"
+#include "core/collision.hpp"
 
 #include "objects/player.hpp"
 #include "objects/ball.hpp"

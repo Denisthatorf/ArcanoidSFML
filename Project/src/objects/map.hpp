@@ -1,5 +1,5 @@
 #include "defines.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 #include <vector>
 
 #define MAP_BOOST_GATE_ANIMATION 6

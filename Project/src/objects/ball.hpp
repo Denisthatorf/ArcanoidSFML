@@ -1,6 +1,6 @@
 #include "defines.hpp"
 
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 
 class Ball
 {

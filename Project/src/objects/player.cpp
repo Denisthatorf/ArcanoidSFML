@@ -1,6 +1,6 @@
 #include "player.hpp"
 #include "Framework.h"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 #include "core/log.hpp"
 #include <cstdint>
 

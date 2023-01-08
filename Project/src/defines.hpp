@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math/vector2d.hpp>
+#include <core/vector2d.hpp>
 #include <stdint.h>
 
 class Sprite;

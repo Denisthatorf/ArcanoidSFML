@@ -1,6 +1,6 @@
 #include "Framework.h"
 #include "defines.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 
 #define BOOST_TYPES_NUM 2
 #define BOOST_ANIMATION_NUM 8

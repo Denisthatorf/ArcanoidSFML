@@ -1,7 +1,7 @@
 #include "boost.hpp"
 #include "Framework.h"
 #include "defines.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 
 Sprite* Boost::_sprites[BOOST_SPRITES_NUM];
 

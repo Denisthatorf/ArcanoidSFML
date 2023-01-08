@@ -1,7 +1,7 @@
 #include "ball.hpp"
 #include "Framework.h"
 #include "defines.hpp"
-#include "math/vector2d.hpp"
+#include "core/vector2d.hpp"
 #include <features.h>
 
 Sprite* Ball::_sprite;

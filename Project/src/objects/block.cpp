@@ -6,7 +6,7 @@
 
 //348x128
 
-Sprite* Block::_sprites[COLOR_COUNT];
+std::array<Sprite*, COLOR_COUNT> Block::_sprites;
 int Block::_width;
 int Block::_height;
 
