@@ -9,10 +9,9 @@ add_dependencies(test data)
 
 target_include_directories(test
         PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/src
             ${CMAKE_SOURCE_DIR}/Framework/inc
-            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/dynamic_bitset/include
-            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/dynamic_bitset/include/boost
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_SOURCE_DIR}/FRAMEWORK/inc
             )
 
 target_link_libraries(test

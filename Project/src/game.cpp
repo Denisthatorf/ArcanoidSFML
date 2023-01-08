@@ -2,7 +2,7 @@
 
 #include "defines.hpp"
 
-#include "core/log.hpp"
+#include "logger.hpp"
 
 #include "core/vector2d.hpp"
 #include "core/collision.hpp"
@@ -158,7 +158,7 @@ public:
 	{
 		if(stats.lives <= 0)
 		{
-			log_info("Your score is %i", stats.score);
+			CLIENT_LOG_DEBUG("Your score is %i", stats.score);
 
 			stats.lives = 1;
 			stats.score = 0;
@@ -225,11 +225,11 @@ public:
 				switch (boost.type) {
 					case HeartMinus:
 						stats.lives -= 1;
-						log_info("LIVES: %i", stats.lives);
+						CLIENT_LOG_DEBUG("LIVES: %i", stats.lives);
 						break;
 					case HeartPlus:
 						stats.lives += 1;
-						log_info("LIVES: %i", stats.lives);
+						CLIENT_LOG_DEBUG("LIVES: %i", stats.lives);
 						break;
 				}
 			}

@@ -1,7 +1,7 @@
 #include "player.hpp"
 #include "Framework.h"
 #include "core/vector2d.hpp"
-#include "core/log.hpp"
+#include "logger.hpp"
 #include <cstdint>
 
 

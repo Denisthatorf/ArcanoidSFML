@@ -5,3 +5,4 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 add_subdirectory(Project)
 add_subdirectory(Framework)
+add_subdirectory(vendor/spdlog)
