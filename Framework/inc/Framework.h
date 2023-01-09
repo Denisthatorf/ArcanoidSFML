@@ -11,19 +11,26 @@
     #define FRAMEWORK_API 
 #endif
 
+class SDL_Texture;
 
-// Bonus for any found bugs in the framework!
+class Sprite 
+{
+public:
+	Sprite(const char* path);
+	~Sprite();
 
-class Sprite;
+	void drawSprite(int x, int y);
+	
+	void getSpriteSize(int& w, int &h)
+		{ w = _w; h = _h; }
 
-FRAMEWORK_API Sprite* createSprite(const char* path);
-FRAMEWORK_API void drawSprite(Sprite*, int x, int y);
+	void setSpriteSize(int w, int h)
+		{ _w = w; _h = h; }
 
-FRAMEWORK_API void getSpriteSize(Sprite* s, int& w, int &h);
-FRAMEWORK_API void setSpriteSize(Sprite* s, int w, int h);
-FRAMEWORK_API void destroySprite(Sprite* s);
-
-FRAMEWORK_API void drawTestBackground();
+private:
+	int _w, _h;
+	SDL_Texture* _tex;
+};
 
 FRAMEWORK_API void getScreenSize(int& w, int &h);
 
@@ -50,8 +57,8 @@ enum class FRMouseButton {
 class Framework {
 public:
 
-	// no function calls are available here, this function should only return width, height and fullscreen values
-	virtual void PreInit(int& width, int& height, bool& fullscreen) = 0;
+	Framework(int width, int height, bool fullscreen);
+	virtual ~Framework() {};
 
 	// return : true - ok, false - failed, application will exit
 	virtual bool Init() = 0;
@@ -72,8 +79,6 @@ public:
 	virtual void onKeyReleased(FRKey k) = 0;
 
 	virtual const char* GetTitle() = 0;
-
-	virtual ~Framework() {};
 };
 
 

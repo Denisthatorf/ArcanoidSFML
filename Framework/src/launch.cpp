@@ -10,92 +10,49 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
-#include "inc/Framework.h"
+#include "Framework.h"
+#include "logger.hpp"
 
 
 static SDL_Renderer *g_renderer;
+
 static int g_width = 800;
 static int g_height = 600;
-static int g_framework_initialized = false;
+static bool g_fullscreen = false;
+static int g_framework_initialized = true;
 
-/*
- * structure declarations
- */
+FRAMEWORK_API Sprite::~Sprite()
+{
+	SDL_assert(g_framework_initialized);
+	SDL_DestroyTexture(_tex);
+}
 
-class Sprite {
-public:
-	Sprite():w(0), h(0), tex(nullptr) {}
-
-	int w, h;
-	SDL_Texture* tex;
-};
-
-FRAMEWORK_API Sprite* createSprite(const char* path)
+FRAMEWORK_API Sprite::Sprite(const char* path) 
+	: _w(0), _h(0), _tex(nullptr)
 {
 	SDL_assert(g_framework_initialized);
 	SDL_assert(g_renderer);
 
 	SDL_Texture* texture = IMG_LoadTexture(g_renderer, path);
 	if (!texture) {
-		fprintf(stderr, "Couldn't load %s: %s\n", path, SDL_GetError());
-		return nullptr;
+		CORE_LOG_ERROR("Couldn't load {}: {}\n", path, SDL_GetError());
 	}
 
-
-	Sprite* s = new Sprite();
-	if (!s)
-	{
-		fprintf(stderr, "Not enough memory\n");
-		SDL_Quit();
-		exit(1);
-	}
-
-	SDL_QueryTexture(texture, NULL, NULL, &s->w, &s->h);
-
-	s->tex = texture;
-
-	return s;
+	SDL_QueryTexture(texture, NULL, NULL, &_w, &_h);
+	_tex = texture;
 }
 
-FRAMEWORK_API void destroySprite(Sprite* s)
-{
-	SDL_assert(g_framework_initialized);
-	SDL_assert(s);
-
-	if (s->tex)
-	{
-		SDL_DestroyTexture(s->tex);
-	}
-
-	delete s;
-}
-
-FRAMEWORK_API void getSpriteSize(Sprite* s, int& w, int &h)
-{
-	SDL_assert(s);
-	w = s->w;
-	h = s->h;
-}
-
-FRAMEWORK_API void setSpriteSize(Sprite* s, int w, int h)
-{
-	SDL_assert(s);
-	s->w = w;
-	s->h = h;
-}
-
-FRAMEWORK_API void drawSprite(Sprite* sprite, int x, int y)
+FRAMEWORK_API void Sprite::drawSprite(int x, int y)
 {
 	SDL_assert(g_framework_initialized);
 	SDL_assert(g_renderer);
-	SDL_assert(sprite);
 
 	SDL_Rect r;
-	r.w = sprite->w;
-	r.h = sprite->h;
+	r.w = _w;
+	r.h = _h;
 	r.x = x;
 	r.y = y;
-	SDL_RenderCopy(g_renderer, sprite->tex, NULL, &r);
+	SDL_RenderCopy(g_renderer, _tex, NULL, &r);
 }
 
 FRAMEWORK_API void getScreenSize(int& w, int &h)
@@ -114,44 +71,6 @@ FRAMEWORK_API unsigned int getTickCount()
 	return SDL_GetTicks();
 }
 
-
-
-/* Draw a Gimpish background pattern to show transparency in the image */
-static void draw_background(SDL_Renderer *renderer, int w, int h)
-{
-    SDL_Color col[2] = {
-        { 0x66, 0x66, 0x66, 0xff },
-        { 0x99, 0x99, 0x99, 0xff },
-    };
-    int i, x, y;
-    SDL_Rect rect;
-
-    rect.w = 8;
-    rect.h = 8;
-    for (y = 0; y < h; y += rect.h) {
-        for (x = 0; x < w; x += rect.w) {
-            /* use an 8x8 checkerboard pattern */
-            i = (((x ^ y) >> 3) & 1);
-            SDL_SetRenderDrawColor(renderer, col[i].r, col[i].g, col[i].b, col[i].a);
-
-            rect.x = x;
-            rect.y = y;
-            SDL_RenderFillRect(renderer, &rect);
-        }
-    }
-}
-
-
-FRAMEWORK_API void drawTestBackground()
-{
-	SDL_assert(g_framework_initialized);
-	SDL_assert(g_renderer);
-
-	SDL_Rect viewport;
-	SDL_RenderGetViewport(g_renderer, &viewport);
-	return draw_background(g_renderer, viewport.w, viewport.h);
-}
-
 FRAMEWORK_API void showCursor(bool bShow)
 {
 	SDL_ShowCursor(bShow?1:0);
@@ -159,8 +78,17 @@ FRAMEWORK_API void showCursor(bool bShow)
 
 bool GKeyState[(int)FRKey::COUNT] = {};
 
+FRAMEWORK_API Framework::Framework(int width, int height, bool fullscreen)
+{
+	g_width = width;
+	g_height = height;
+	g_fullscreen = fullscreen;
+}
+
 FRAMEWORK_API int run(Framework* framework)
 {
+	initLogger();
+
     SDL_Window *window;
     Uint32 flags;
     int done;
@@ -173,11 +101,8 @@ FRAMEWORK_API int run(Framework* framework)
 
 	Framework* GFramework = framework;
 
-	bool fullscreen;
-	GFramework->PreInit(g_width, g_height, fullscreen);
-	
     flags = SDL_WINDOW_HIDDEN;
-	if (fullscreen) {
+	if (g_fullscreen) {
 		SDL_ShowCursor(0);
         flags |= SDL_WINDOW_FULLSCREEN;
     }
@@ -297,7 +222,7 @@ FRAMEWORK_API int run(Framework* framework)
     SDL_DestroyRenderer(g_renderer);
     SDL_DestroyWindow(window);
 
-	g_framework_initialized = false;
+	//g_framework_initialized = false;
 
     /* We're done! */
     SDL_Quit();

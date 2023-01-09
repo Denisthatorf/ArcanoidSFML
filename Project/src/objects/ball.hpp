@@ -2,10 +2,12 @@
 
 #include "core/vector2d.hpp"
 
+#include <memory>
+
 class Ball
 {
 private:
-    static Sprite* _sprite;
+    static std::unique_ptr<Sprite> _sprite;
     static int _radius;
     static float speed;
 
@@ -14,7 +16,6 @@ private:
     
 public:
     static void initSprites(float k);
-    static void destroySprites();
 
     Ball();
 

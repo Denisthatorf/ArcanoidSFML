@@ -6,23 +6,23 @@
 
 //348x128
 
-std::array<Sprite*, COLOR_COUNT> Block::_sprites;
+std::array<std::unique_ptr<Sprite>, COLOR_COUNT> Block::_sprites;
 int Block::_width;
 int Block::_height;
 
 void Block::initSprites(float k)
 {
-	_sprites[Yellow]		  = createSprite("./data/Block-Yellow.png");
-	_sprites[Sea] 		   	  = createSprite("./data/Block-Sea.png");
-	_sprites[Orange] 			  = createSprite("./data/Block-Orange.png");
-	_sprites[Green] 			  = createSprite("./data/Block-Green.png");
-	_sprites[Red] 			  = createSprite("./data/Block-Red.png");
-	_sprites[Gray] 			  = createSprite("./data/Block-Gray.png");
+	_sprites[Yellow]		  = std::make_unique<Sprite>("./data/Block-Yellow.png");
+	_sprites[Sea] 		   	  = std::make_unique<Sprite>("./data/Block-Sea.png");
+	_sprites[Orange] 		  = std::make_unique<Sprite>("./data/Block-Orange.png");
+	_sprites[Green] 		  = std::make_unique<Sprite>("./data/Block-Green.png");
+	_sprites[Red] 			  = std::make_unique<Sprite>("./data/Block-Red.png");
+	_sprites[Gray] 			  = std::make_unique<Sprite>("./data/Block-Gray.png");
 
 	calculateSpriteSize(_sprites[Yellow], k, _width, _height);
 
 	for (int i = 0; i < COLOR_COUNT; i++)
-		setSpriteSize(_sprites[i], _width, _height);
+		_sprites.at(i)->setSpriteSize(_width, _height);
 }
 
 Block::Block(vector2d<float> location, BlockColor color)
@@ -31,15 +31,9 @@ Block::Block(vector2d<float> location, BlockColor color)
 	_state(Normal)
 {}
 
-void Block::destroySprites()
-{
-	for (int i = 0; i < COLOR_COUNT; i++)
-		destroySprite(_sprites[i]);
-}
-
 void Block::draw()
 {
-	drawSprite(_sprites[_color], _position.x, _position.y);
+	_sprites.at(_color)->drawSprite(_position.x, _position.y);
 }
 
 vector2d<float> Block::getPosition() const

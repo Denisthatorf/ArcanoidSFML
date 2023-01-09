@@ -3,7 +3,7 @@
 #include "helper.hpp"
 #include "core/vector2d.hpp"
 
-Sprite* Boost::_sprites[BOOST_SPRITES_NUM];
+std::array<std::unique_ptr<Sprite>, BOOST_SPRITES_NUM> Boost::_sprites;
 
 float Boost::speed = 0.2f;
 int Boost::_width;
@@ -19,20 +19,14 @@ void Boost::initSprites(float k)
         heartPlus[16] = i+1 + '0';
         heartMinus[18] = i+1 + '0';
 
-        _sprites[HeartMinus + i] = createSprite(heartPlus);
-        _sprites[HeartPlus + i]  = createSprite(heartMinus);
+        _sprites[HeartMinus + i] = std::make_unique<Sprite>(heartPlus);
+        _sprites[HeartPlus + i]  = std::make_unique<Sprite>(heartMinus);
     }
 
-    calculateSpriteSize(_sprites[HeartPlus], k, _width, _height);
+    calculateSpriteSize(_sprites.at(HeartPlus), k, _width, _height);
 
     for(int i = 0; i < BOOST_SPRITES_NUM;  i++)
-        setSpriteSize(_sprites[i], _width, _height);
-}
-
-void Boost::destroySprites()
-{
-    for(int i = 0; i < BOOST_SPRITES_NUM;  i++)
-        destroySprite(_sprites[i]);
+        _sprites.at(i)->setSpriteSize( _width, _height);
 }
 
 //BOOST METHODS
@@ -47,7 +41,7 @@ Boost::Boost(vector2d<float> position, BoostType type)
 
 void Boost::draw()
 {
-    drawSprite(_sprites[type + _animation], position.x, position.y);
+    _sprites.at(type + _animation)->drawSprite(position.x, position.y);
 }
 
 void Boost::update(unsigned int delta)

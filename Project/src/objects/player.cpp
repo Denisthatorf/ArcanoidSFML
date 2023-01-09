@@ -5,30 +5,20 @@
 #include "helper.hpp"
 #include <cstdint>
 
+std::array<std::unique_ptr<Sprite>, SPRITES_NUM> Player::_sprites;
 
-Sprite* Player::_sprites[SpritesNum];
 float Player::speed = 1;
 int Player::_width;
 int Player::_height;
 
 void Player::initSprites(float k)
 {
-    //TODO: !!!
-    _sprites[PlayerNormal] = createSprite("./data/StarShip.png");
-    //_sprites[PlayerShort] = createSprite("./data/StarShip.png");
-    //_sprites[PlayerLong] = createSprite("./data/StarShip.png");
-	
-    calculateSpriteSize(_sprites[PlayerNormal], k, _width, _height);
+    //TODO: Player animation
+    _sprites[PlayerNormal] = std::make_unique<Sprite>("./data/StarShip.png");
 
-    //for(uint8_t i = 0; i < SpritesNum; i++)
-    setSpriteSize(_sprites[PlayerNormal], _width, _height);
-}
+    calculateSpriteSize(_sprites.at(PlayerNormal), k, _width, _height);
 
-void Player::destroySprites()
-{
-    //TODO: !!!
-    //for(uint8_t i = 0; i < SpritesNum; i++)
-    destroySprite(_sprites[PlayerNormal]);
+    _sprites.at(PlayerNormal)->setSpriteSize(_width, _height);
 }
 
 Player::Player()
@@ -39,18 +29,12 @@ Player::Player()
 
 void Player::draw()
 {
-    //TODO: !!!
-    //Sprite* sprite = _sprites[_animation % 3];
-
-    Sprite* sprite = _sprites[PlayerNormal];
-    drawSprite(sprite, _position.x, _position.y);
+    //TODO: Player animation
+    _sprites.at(PlayerNormal)->drawSprite(_position.x, _position.y);
 }
 
 void Player::update(unsigned int delta_time)
 {
-    //TODO: think
-    //_animation += 1;
-
     _position.x += _direction_to_move * speed * delta_time;
     _direction_to_move = 0;
 }

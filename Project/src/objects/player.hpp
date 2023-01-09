@@ -3,7 +3,10 @@
 #include "defines.hpp"
 #include "core/vector2d.hpp"
 
-#define SpritesNum 3
+#include <memory>
+#include <array>
+
+#define SPRITES_NUM 3
 
 enum PlayerState
 {
@@ -15,7 +18,7 @@ enum PlayerState
 class Player
 {
 private:
-    static Sprite* _sprites[SpritesNum];
+    static std::array<std::unique_ptr<Sprite>, SPRITES_NUM> _sprites;
     static int _width, _height;
     static float speed;
 
@@ -25,7 +28,6 @@ private:
 
 public: 
 	static void initSprites(float k);	
-    static void destroySprites();
 
     Player();
 

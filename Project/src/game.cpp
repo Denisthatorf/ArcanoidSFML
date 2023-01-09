@@ -57,22 +57,16 @@ private:
 
 public:
 	MyFramework(int width, int height, int isFullscreen)
-		: map(width, height, boosts),
+		: Framework(width, height, isFullscreen),
+		map(width, height, boosts),
 		mouse( {0, 0} ),
 		margin(0),
 		is_full_screen(isFullscreen),
 		time_for_boost(0),
 		is_block_destroyed(false),
 		is_boost_catched(false),
-		level_blocks(6 * 11)
-	{ }
-
-	virtual void PreInit(int& width, int& height, bool& fullscreen) override
-	{
-		width = map.width;
-		height = map.height;
-		fullscreen = is_full_screen;
-	}
+		level_blocks(6 * 11) //TODO: calculate
+	{}
 
 	virtual bool Init() override 
 	{
@@ -90,19 +84,10 @@ public:
 		stats.setBorder( {map.width - map.getBorder(), map.getBorder() }, margin);
 
 		Reset();
-
 		return true;
 	}
 
-	virtual void Close() override 
-	{
-		Player::destroySprites();
-		Ball::destroySprites();
-		Block::destroySprites();	
-		Stats::destroySprites();
-		Boost::destroySprites();
-		Map::destroySprites();
-	}
+	virtual void Close() override {}
 
 	virtual bool Tick() override 
 	{

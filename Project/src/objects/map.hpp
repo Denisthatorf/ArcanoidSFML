@@ -1,6 +1,9 @@
 #include "defines.hpp"
 #include "core/vector2d.hpp"
+
 #include <vector>
+#include <array>
+#include <memory>
 
 #define MAP_BOOST_GATE_ANIMATION 6
 #define MAP_SPRITES_NUM 12
@@ -20,13 +23,12 @@ enum MapSprites
 class Map
 {
 private:
-    static Sprite* _sprites[MAP_SPRITES_NUM];
+    static std::array<std::unique_ptr<Sprite>, MAP_SPRITES_NUM> _sprites;
     static int _gate_padding;
     static int _border;
 
 public:
     static void initSprites(float k);
-    static void destroySprites();
 
 private:
     unsigned int _animation_delta = 0;

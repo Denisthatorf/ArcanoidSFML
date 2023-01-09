@@ -2,6 +2,9 @@
 #include "defines.hpp"
 #include "core/vector2d.hpp"
 
+#include <memory>
+#include <array>
+
 #define BOOST_TYPES_NUM 2
 #define BOOST_ANIMATION_NUM 8
 #define BOOST_SPRITES_NUM 2 * 8
@@ -15,13 +18,12 @@ enum BoostType
 class Boost
 {
 private:
-    static Sprite* _sprites[BOOST_SPRITES_NUM];
+    static std::array<std::unique_ptr<Sprite>, BOOST_SPRITES_NUM> _sprites;
     static int _width, _height;
     static float speed;
 
 public: 
     static void initSprites(float k);
-    static void destroySprites();
 
     static void getSize(int& width, int& height);
 

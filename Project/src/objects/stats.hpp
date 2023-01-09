@@ -1,13 +1,13 @@
 #include "defines.hpp"
+#include <memory>
 
 struct Stats
 {
 private:
-    static Sprite* heart_sprite;
+    static std::unique_ptr<Sprite> heart_sprite;
 
 public:
     static void initSprites(float k);
-    static void destroySprites();
 
     int score = 0;
     int destroyed_in_row = 0;

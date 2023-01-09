@@ -4,25 +4,20 @@
 #include "core/vector2d.hpp"
 #include <features.h>
 
-Sprite* Ball::_sprite;
+std::unique_ptr<Sprite> Ball::_sprite;
 
 float Ball::speed = 0.5f;
 int Ball::_radius;
 
 void Ball::initSprites(float k)
 {
-    _sprite = createSprite("./data/Ball.png");
+    _sprite = std::make_unique<Sprite>("./data/Ball.png");
 
     int width, height;
     calculateSpriteSize(_sprite, k, width, height);
     _radius = width / 2;
 
-    setSpriteSize(_sprite, width, height);
-}
-
-void Ball::destroySprites()
-{
-    destroySprite(_sprite);
+    _sprite->setSpriteSize(width, height);
 }
 
 Ball::Ball()
@@ -32,7 +27,7 @@ Ball::Ball()
 
 void Ball::draw()
 {
-    drawSprite(_sprite, _position.x, _position.y);
+    _sprite->drawSprite(_position.x, _position.y);
 }
 
 void Ball::update(unsigned int delta_time)

@@ -1,5 +1,8 @@
 #pragma once 
 #include "defines.hpp"
+#include <Framework.h>
 
-void calculateSpriteSize(Sprite *s, float k, int& out_width, int& out_height);
-void setSpriteSizeByK(Sprite *s, float k);
+#include <memory>
+
+void calculateSpriteSize(std::unique_ptr<Sprite>& s, float k, int& out_width, int& out_height);
+void setSpriteSizeByK(std::unique_ptr<Sprite>& s, float k);

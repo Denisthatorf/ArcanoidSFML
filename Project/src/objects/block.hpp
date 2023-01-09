@@ -1,5 +1,6 @@
 #include "defines.hpp"
 
+#include <memory>
 #include <vector>
 #include <array>
 
@@ -29,7 +30,7 @@ protected:
 	static int _width;
 	static int _height;
 	static unsigned int _block_num;
-	static std::array<Sprite*, COLOR_COUNT> _sprites;
+	static std::array<std::unique_ptr<Sprite>, COLOR_COUNT> _sprites;
 
 	vector2d<float> _position;
 	BlockColor _color;
@@ -48,6 +49,5 @@ public:
 
 public:
 	static void initSprites(float k);	
-	static void destroySprites();
 	static void getBlockSize(int& width, int& height);
 };
