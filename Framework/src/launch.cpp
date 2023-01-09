@@ -108,12 +108,12 @@ FRAMEWORK_API int run(Framework* framework)
     }
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
-        fprintf(stderr, "SDL_Init(SDL_INIT_VIDEO) failed: %s\n", SDL_GetError());
+        CORE_LOG_ERROR("SDL_Init(SDL_INIT_VIDEO) failed: {}\n", SDL_GetError());
         return(2);
     }
 
     if (SDL_CreateWindowAndRenderer(0, 0, flags, &window, &g_renderer) < 0) {
-        fprintf(stderr, "SDL_CreateWindowAndRenderer() failed: %s\n", SDL_GetError());
+        CORE_LOG_ERROR("SDL_CreateWindowAndRenderer() failed: {}\n", SDL_GetError());
         return(2);
     }
 

@@ -39,6 +39,7 @@ protected:
 public:
 	Block(vector2d<float> location, BlockColor color);
 	virtual ~Block() = default;
+
     virtual void crash() = 0;
 
     void draw();

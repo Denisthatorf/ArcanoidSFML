@@ -53,7 +53,7 @@ private:
 	bool is_boost_catched;
 
 	std::vector<Boost> boosts;
-	std::vector<Block*> level_blocks;
+	std::vector<std::unique_ptr<Block>> level_blocks;
 
 public:
 	MyFramework(int width, int height, int isFullscreen)
@@ -143,7 +143,7 @@ public:
 	{
 		if(stats.lives <= 0)
 		{
-			CLIENT_LOG_DEBUG("Your score is %i", stats.score);
+			CLIENT_LOG_DEBUG("Your score is {}", stats.score);
 
 			stats.lives = 1;
 			stats.score = 0;
@@ -190,7 +190,7 @@ public:
 
 		for(auto& block : level_blocks)
 		{
-			if( collisionBlockAndBall(block, &ball) )
+			if( collisionBlockAndBall(block.get(), &ball) )
 			{
 				stats.plusForScore();
 				is_block_destroyed = true;
@@ -210,11 +210,11 @@ public:
 				switch (boost.type) {
 					case HeartMinus:
 						stats.lives -= 1;
-						CLIENT_LOG_DEBUG("LIVES: %i", stats.lives);
+						CLIENT_LOG_DEBUG("LIVES: {}", stats.lives);
 						break;
 					case HeartPlus:
 						stats.lives += 1;
-						CLIENT_LOG_DEBUG("LIVES: %i", stats.lives);
+						CLIENT_LOG_DEBUG("LIVES: {}", stats.lives);
 						break;
 				}
 			}
@@ -225,7 +225,7 @@ public:
 			//TODO: optimaze
 			level_blocks.erase(
 				std::remove_if(level_blocks.begin(), level_blocks.end(),
-				[](const Block* block) { return block->isNeedToDestroy(); }),
+				[](const std::unique_ptr<Block>& block) { return block->isNeedToDestroy(); }),
   						level_blocks.end());
 			is_block_destroyed = false;
 		}
@@ -307,8 +307,8 @@ public:
 		for(int i = 0; i < 11; i++)
 		{
 			vector2d<float> pos (map.getBorder() + margin + block_w * i, 4 * BLOCK_ASSET_HEIGHT * coefficient);
-			Block* block = new Undestroyable_Block(pos);
-			level_blocks.push_back(block);
+			auto block = std::make_unique<Undestroyable_Block>(pos);
+			level_blocks.push_back(std::move(block));
 		}
 
 		for(int i = 0; i < 4; i++)
@@ -316,8 +316,8 @@ public:
 			for(int j = 0; j < 11; j++)
 			{
 				vector2d<float> pos (map.getBorder() + margin + block_w * j, 5 * BLOCK_ASSET_HEIGHT * coefficient + block_h * i);
-				Block* block = new Normal_Block(pos , (BlockColor)(i % 5) );
-				level_blocks.push_back(block);
+				auto block = std::make_unique<Normal_Block>(pos , (BlockColor)(i % 5) );
+				level_blocks.push_back(std::move(block));
 			}
 		}
 	}
